@@ -1,0 +1,30 @@
+﻿<h3>VueJS 2 in ASP.NET MVC 5</h3>
+<div id="aboutPage">
+    {{ message }}
+    <div>
+        <button id="clickHere" v-on:click="getTestMessage()">Click Here to Update</button>
+        <div>
+            {{ oldMessage }}
+        </div>
+    </div>
+</div>
+<script>
+    var aboutPage = new Vue({
+        el: '#aboutPage',
+        data: {
+            message: 'Hello Vue! in About Page',
+            oldMessage: 'I\'m old'
+        },
+        methods: {
+            getTestMessage: () => {
+                return $.ajax({
+                    url: "/api/test/get",
+                    type: 'GET'
+                }).then((result) => {
+                    aboutPage.oldMessage = aboutPage.message;
+                    aboutPage.message = result;
+                });
+            }
+        }
+    });
+</script>
