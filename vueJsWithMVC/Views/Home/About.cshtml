@@ -1,11 +1,32 @@
-﻿<h3>VueJS 2 in ASP.NET MVC 5</h3>
+﻿@{
+    ViewBag.Title = "About";
+}
+
+<h3>VueJS 2 in ASP.NET MVC 5</h3>
 <div id="aboutPage">
-    {{ message }}
     <div>
-        <button id="clickHere" v-on:click="getTestMessage()">Click Here to Update</button>
-        <div>
-            {{ oldMessage }}
-        </div>
+        {{ message }}
+    </div>
+    <div>
+        <button class="btn btn-primary" v-on:click="clickme">Change the Message</button>
+        <button v-if="items.length == 0"class="btn btn-warning" v-on:click="showList">Get List</button>
+        <button v-if="items.length > 0" class="btn btn-success" v-on:click="clearList">Clear List</button>
+        <button v-if="products.length == 0" class="btn btn-danger" v-on:click="getProducts">Get Products</button>
+        <button v-show="products.length > 0" class="btn btn-info" v-on:click="clearProductList">Clear Products</button>
+    </div>
+    <div>
+        <ul>
+            <li v-for="item in items">
+                {{ item }}
+            </li>
+        </ul>
+    </div>
+    <div>
+        <ul>
+            <li v-for="item in products">
+                {{ item.ProductId}} - {{ item.Description }} - {{ item.Price }}
+            </li>
+        </ul>
     </div>
 </div>
 <script>
@@ -13,18 +34,54 @@
         el: '#aboutPage',
         data: {
             message: 'Hello Vue! in About Page',
-            oldMessage: 'I\'m old'
+            items: [],
+            products: []
         },
         methods: {
-            getTestMessage: () => {
-                return $.ajax({
-                    url: "/api/test/get",
-                    type: 'GET'
-                }).then((result) => {
-                    aboutPage.oldMessage = aboutPage.message;
-                    aboutPage.message = result;
+            clickme: () => {
+                getMessage().then((data) => {
+                    aboutPage.message = data;
                 });
+            },
+            showList: () => {
+                getList().then((data) => {
+                    aboutPage.items = data;
+                });
+            },
+            clearList: () => {
+                aboutPage.items = [];
+            },
+            getProducts: () => {
+                getProductList().then((data) => {
+                    aboutPage.products = data;
+                });
+            },
+            clearProductList: () => {
+                aboutPage.products = [];
             }
         }
     });
+
+    var getMessage = () => {
+        return $.get({
+            url: "/api/test/getmessage"
+        }).catch((error) => {
+            console.log("Error executing get " + error);
+        });
+    };
+
+    var getList = () => {
+        return $.get({
+            url: "/api/test/getlist"
+        }).catch((error) => {
+            console.log("Error executing get " + error);
+        });
+    };
+
+    var getProductList = () => {
+        return $.get({
+            url: "/api/test/getproductlist"    
+        });
+    };
+
 </script>
