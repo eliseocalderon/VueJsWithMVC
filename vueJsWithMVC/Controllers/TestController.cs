@@ -29,7 +29,7 @@ namespace vueJsWithMVC.Controllers
         {
             var products = new List<ProductDto>()
             {
-                new ProductDto(){ ProductId = 1, Description = "Coffee", Price = 10.99m },
+                new ProductDto(){ ProductId = 1, Description = "Coffee", Price = 10.999m },
                 new ProductDto() { ProductId = 2, Description = "Flan", Price = 2.00m },
                 new ProductDto() { ProductId = 3, Description = "Cookies", Price = 5.98m },
                 new ProductDto(){ ProductId = 4, Description = "Cameo Cookies", Price = 210m },

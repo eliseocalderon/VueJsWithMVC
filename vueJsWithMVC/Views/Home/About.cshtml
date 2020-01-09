@@ -24,7 +24,9 @@
     <div>
         <ul>
             <li v-for="item in products">
-                {{ item.ProductId}} - {{ item.Description }} - {{ item.Price }}
+                ID: {{ item.ProductId}}<br />
+                Description: {{ item.Description }}<br />
+                Price: {{ item.Price | toCurrency }}
             </li>
         </ul>
     </div>
@@ -33,7 +35,7 @@
     var aboutPage = new Vue({
         el: '#aboutPage',
         data: {
-            message: 'Hello Vue! in About Page',
+            message: 'Hello Vue in About Page',
             items: [],
             products: []
         },
@@ -59,6 +61,15 @@
             clearProductList: () => {
                 aboutPage.products = [];
             }
+        },
+        filters: {
+            toCurrency: (price) => {
+                return new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                    minimumFractionDigits: 2
+                }).format(price);
+            }
         }
     });
 
@@ -69,6 +80,14 @@
             console.log("Error executing get " + error);
         });
     };
+
+    //var formattedPrice = (price) => {
+    //    return new Intl.NumberFormat('en-US', {
+    //        style: 'currency',
+    //        currency: 'USD',
+    //        minimumFractionDigits: 2
+    //    }).format(price);
+    //};
 
     var getList = () => {
         return $.get({
